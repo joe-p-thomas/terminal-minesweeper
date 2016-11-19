@@ -3,7 +3,7 @@ require_relative 'tile.rb'
 class Board
   attr_reader :board, :size
 
-  def initialize(size = 9)
+  def initialize(size)
     @size = size
     @board = Array.new(size) { Array.new(size) }
   end
@@ -44,8 +44,3 @@ class Board
   end
 
 end
-
-board = Board.new(20)
-board.populate_board
-
-board.display
