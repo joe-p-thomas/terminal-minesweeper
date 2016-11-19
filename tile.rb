@@ -1,24 +1,51 @@
 class Tile
   attr_reader :pos
 
-  def initialize(pos,board)
+  def initialize(pos, board)
     @pos = pos
     @board = board
 
-    @bomb = false
-    @bomb_neighbors = 0
+    @bombed = false
+    @bombed_neighbors = 0
     @flagged = false
     @revealed = false
   end
 
+  def place_bomb
+    @bombed = true
+    neighbor_pos.each do |pos|
+      @board[pos].add_bombed_neighbor
+    end
+  end
+
+  def add_bombed_neighbor
+    @bombed_neighbors += 1
+  end
+
+  def bombed?
+    @bombed
+  end
+
+  def change_flag
+    if @flagged
+      @flagged = false
+    else
+      @flagged = true
+    end
+  end
+
+  def flagged?
+    @flagged
+  end
+
   def display
-    if revealed
-      if @bomb
+    if @revealed
+      if @bombed
         "X"
-      elsif @bomb_neighbors = 0
-        " "
+      elsif @bombed_neighbors == 0
+        "-"
       else
-        @bomb_neighbors.to_s
+        @bombed_neighbors.to_s
       end
     else
       if @flagged
@@ -30,7 +57,7 @@ class Tile
   end
 
   def reveal
-    if @bomb_neighbors = 0 && !@revealed
+    if @bombed_neighbors = 0 && !@revealed
       @revealed = true
       reveal_neighbors
     else
@@ -38,28 +65,26 @@ class Tile
     end
   end
 
+  def reveal_neighbors
+    neighbor_pos.each do |pos|
+      @board[pos].reveal
+    end
+  end
+
   def neighbor_pos
     neighbor_pos = []
-
     -1.upto(1) do |row_change|
       -1.upto(1) do |col_change|
-        row = pos.first + row_change
-        col = pos.last + col_change
-        if (0..8).inlcude?(row) && (0..8).include?(col)
+        row = @pos.first + row_change
+        col = @pos.last + col_change
+        if (0...@board.size).cover?(row) &&
+           (0...@board.size).cover?(col)
           neighbor_pos << [row, col]
         end
       end
     end
 
     neighbor_pos
-  end
-
-  def change_flag
-    if @flagged
-      @flagged = false
-    else
-      @flagged = true
-    end
   end
 
 end
