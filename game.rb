@@ -13,10 +13,12 @@ class Game
       play_turn
     end
     system("clear")
-    @board.display
     if @board.game_lost?
+      @board.reveal_bombs
+      @board.display
       puts "Sorry, you lose"
     else
+      @board.display
       puts "Congrates, you win!"
     end
   end
@@ -53,5 +55,5 @@ class Game
 
 end
 
-game = Game.new(6)
+game = Game.new(10)
 game.run

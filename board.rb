@@ -6,7 +6,8 @@ class Board
   def initialize(size)
     @size = size
     @board = Array.new(size) { Array.new(size) }
-    @bomb_count = size - 2
+    @bomb_count = size
+    @bomb_positions = []
   end
 
   def populate_board
@@ -19,13 +20,18 @@ class Board
   end
 
   def place_bombs
-    positions = []
-    while positions.count < @bomb_count
+    while @bomb_positions.count < @bomb_count
       pos = [rand(@board.size), rand(@board.size)]
-      unless positions.include?(pos)
+      unless @bomb_positions.include?(pos)
         @board[pos.first][pos.last].place_bomb
-        positions << pos
+        @bomb_positions << pos
       end
+    end
+  end
+
+  def reveal_bombs
+    @bomb_positions.each do |pos|
+      self[pos].force_reveal
     end
   end
 

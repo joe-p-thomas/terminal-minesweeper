@@ -43,7 +43,7 @@ class Tile
   def display
     if @revealed
       if @bombed
-        "X"
+        "X".colorize(:red)
       elsif @bombed_neighbors == 0
         "-".colorize(:light_black)
       else
@@ -60,6 +60,10 @@ class Tile
 
   def revealed?
     @revealed
+  end
+
+  def force_reveal
+    @revealed = true
   end
 
   def reveal
