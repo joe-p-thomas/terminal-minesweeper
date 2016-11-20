@@ -28,6 +28,15 @@ class Board
     end
   end
 
+  def place_marker(pos, marker = nil)
+    if marker
+      self[pos].change_flag
+      false
+    else
+      self[pos].reveal
+    end
+  end
+
   def [](pos)
     row = pos.first
     col = pos.last
@@ -41,6 +50,25 @@ class Board
       end
       puts ""
     end
+  end
+
+  def game_won?
+    displayed_count = 0
+    @board.each do |row|
+      row.each do |tile|
+        displayed_count += 1 if tile.revealed?
+      end
+    end
+    displayed_count == (@size ** 2) - @size
+  end
+
+  def game_lost?
+    @board.each do |row|
+      row.each do |tile|
+        return true if tile.revealed? && tile.bombed?
+      end
+    end
+    false
   end
 
 end

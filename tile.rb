@@ -1,6 +1,6 @@
 class Tile
   attr_reader :pos
-
+  attr_accessor :revealed
   def initialize(pos, board)
     @pos = pos
     @board = board
@@ -56,12 +56,14 @@ class Tile
     end
   end
 
+  def revealed?
+    @revealed
+  end
+
   def reveal
-    if @bombed_neighbors = 0 && !@revealed
+    unless @revealed
       @revealed = true
-      reveal_neighbors
-    else
-      @revealed = true
+      reveal_neighbors if @bombed_neighbors == 0
     end
   end
 

@@ -1,20 +1,30 @@
 require_relative 'board.rb'
 
 class Game
+  attr_reader :board
+
   def initialize(size = 10)
     @board = Board.new(size)
     @board.populate_board
   end
 
   def run
-    game_over = false
-    until game_over
-      game_over = play_turn
+    until @board.game_lost? || @board.game_won?
+      play_turn
+    end
+    system("clear")
+    @board.display
+    if @board.game_lost?
+      puts "Sorry, you lose"
+    else
+      puts "Congrates, you win!"
     end
   end
 
   def play_turn
-
+    system("clear")
+    @board.display
+    prompt_player
   end
 
   def make_move(pos, marker = nil)
@@ -26,7 +36,7 @@ class Game
   end
 
   def prompt_player
-    "Enter 'F' to place flag. Or enter a position to reveal:"
+    print "Enter 'F' to place flag. Or enter a position to reveal:"
     move = gets.chomp
     if move == "F" || move == "f"
       prompt_player_flag
@@ -36,9 +46,12 @@ class Game
   end
 
   def prompt_player_flag
-    "Enter position to place flag:"
+    print "Enter position to place flag:"
     move = gets.chomp
     make_move(move, "flag")
   end
 
 end
+
+game = Game.new
+game.run
