@@ -61,7 +61,7 @@ class Tile
   end
 
   def reveal
-    unless @revealed
+    unless @revealed || @flagged
       @revealed = true
       reveal_neighbors if @bombed_neighbors == 0
     end

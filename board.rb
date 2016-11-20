@@ -44,7 +44,11 @@ class Board
   end
 
   def display
-    @board.each do |row|
+    print " "
+    @board.each_index {|i| print i}
+    puts  ""
+    @board.each_with_index do |row,i|
+      print i
       row.each do |tile|
         print tile.display
       end

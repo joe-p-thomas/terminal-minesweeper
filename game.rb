@@ -53,5 +53,5 @@ class Game
 
 end
 
-game = Game.new
+game = Game.new(6)
 game.run
