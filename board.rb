@@ -45,10 +45,10 @@ class Board
 
   def display
     print " "
-    @board.each_index {|i| print i}
-    puts  ""
-    @board.each_with_index do |row,i|
-      print i
+    @board.each_index {|i| print "#{i}".colorize(:green) }
+    puts ""
+    @board.each_with_index do |row, i|
+      print "#{i}".colorize(:green)
       row.each do |tile|
         print tile.display
       end

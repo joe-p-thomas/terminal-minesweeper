@@ -1,3 +1,5 @@
+require 'colorize'
+
 class Tile
   attr_reader :pos
   attr_accessor :revealed
@@ -43,13 +45,13 @@ class Tile
       if @bombed
         "X"
       elsif @bombed_neighbors == 0
-        "-"
+        "-".colorize(:light_black)
       else
-        @bombed_neighbors.to_s
+        @bombed_neighbors.to_s.colorize(:blue)
       end
     else
       if @flagged
-        "F"
+        "F".colorize(:red)
       else
         "*"
       end
