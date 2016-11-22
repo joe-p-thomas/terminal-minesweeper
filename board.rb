@@ -10,7 +10,7 @@ class Board
     @board = Array.new(size) { Array.new(size) }
     @bomb_count = size
     @bomb_positions = []
-    @cursor = Cursor.new([0,0],self)
+    @cursor = Cursor.new([0, 0], self)
   end
 
   def populate_board
@@ -57,8 +57,8 @@ class Board
   def display
     @board.each_with_index do |row, i|
       row.each_with_index do |tile, j|
-        if @cursor.pos == [i,j]
-          print tile.display.colorize(:background => :yellow) + " "
+        if @cursor.pos == [i, j]
+          print tile.display.colorize(:background => :light_green) + " "
         else
           print tile.display + " "
         end
@@ -74,7 +74,7 @@ class Board
         displayed_count += 1 if tile.revealed?
       end
     end
-    displayed_count == (@size ** 2) - @bomb_count
+    displayed_count == (@size**2) - @bomb_count
   end
 
   def game_lost?
