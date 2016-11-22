@@ -1,13 +1,16 @@
 require_relative 'tile.rb'
+require_relative 'cursor.rb'
+
 
 class Board
-  attr_reader :board, :size
+  attr_reader :board, :size, :cursor
 
   def initialize(size)
     @size = size
     @board = Array.new(size) { Array.new(size) }
     @bomb_count = size
     @bomb_positions = []
+    @cursor = Cursor.new([0,0],self)
   end
 
   def populate_board
@@ -35,11 +38,12 @@ class Board
     end
   end
 
-  def place_marker(pos, marker = nil)
-    if marker
+  def place_marker(pos, marker)
+    case marker
+    when :flag
       self[pos].change_flag
       false
-    else
+    when :reveal
       self[pos].reveal
     end
   end
@@ -51,16 +55,15 @@ class Board
   end
 
   def display
-    print "  "
-    @board.each_index {|i| print "#{i} ".colorize(:green) }
-    puts ""
     @board.each_with_index do |row, i|
-      print "#{i}".colorize(:green) + "|".colorize(:light_black)
-      row.each do |tile|
-        print tile.display + "|".colorize(:light_black)
+      row.each_with_index do |tile, j|
+        if @cursor.pos == [i,j]
+          print tile.display.colorize(:background => :yellow) + " "
+        else
+          print tile.display + " "
+        end
       end
       puts ""
-      # puts "  " + "-" * (@size * 2)
     end
   end
 
